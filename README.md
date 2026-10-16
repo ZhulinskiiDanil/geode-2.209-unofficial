@@ -36,5 +36,18 @@ Ported builds of the Zhulis mods:
 
 Put a `.geode` file into `Geometry Dash/geode/mods`.
 
+## Community mods in `mods/community/`
+Unofficial rebuilds for the 2.209 port: only `mod.json` (GD version) and API fixes were changed, nothing was added. They are published only for mods whose license allows redistribution; each license is in `mods/community/licenses/`. All credit goes to the authors; don't report problems with these builds to them.
+
+| File | Mod | Author / source | License |
+|---|---|---|---|
+| `xboctatuk.globallistpositions.geode` | Global List Integration | [XBOCTATUK](https://github.com/XBOCTATUK/Global-List-Integration) | MIT |
+| `fleym.nongd.geode` | Jukebox | [Fleeym](https://github.com/Fleeym/jukebox) | MIT |
+| `beat.click-sound.geode` | Click Sounds | [clicksounds](https://github.com/clicksounds/geode-clicksound) | MIT |
+| `prevter.imageplus.geode` | Image Plus | [Prevter](https://github.com/Prevter/ImagePlus) | MIT |
+| `geode.devtools.geode` | DevTools | [Geode Team](https://github.com/geode-sdk/DevTools) | MIT |
+
+Global List Integration needs **Node IDs** (`geode.node-ids`). Node IDs has no license file, so its rebuild is not published here; ask whoever shared this port with you for it.
+
 ## Found a bug?
 Open an issue using the "Bug report" template and attach the crash log from `Geometry Dash/geode/crashlogs`. Issues are read regularly.
