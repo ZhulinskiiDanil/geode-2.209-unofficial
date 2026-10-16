@@ -48,7 +48,6 @@ Unofficial rebuilds for the 2.209 port: only `mod.json` (GD version) and API fix
 | `geode.devtools.geode` | DevTools | [Geode Team](https://github.com/geode-sdk/DevTools) | MIT |
 | `hiimjustin000.more_icons.geode` | More Icons | [hiimjasmine00](https://github.com/hiimjasmine00/MoreIcons) | MIT |
 | `hiimjustin000.more_object_info.geode` | More Object Info | [hiimjasmine00](https://github.com/hiimjasmine00/MoreObjectInfo) | MIT |
-| `mat.circle-tool.geode` | Circle Tool | [matcool](https://github.com/matcool/geode-mods) | MIT |
 | `mat.run-info.geode` | Run Info | [matcool](https://github.com/matcool/geode-mods) | MIT |
 | `alk.better-touch-prio.geode` | Better Touch Prio | [altalk23](https://github.com/altalk23/FuckTouchPrio) | Unlicense |
 
