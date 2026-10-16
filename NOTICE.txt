@@ -1,0 +1,2 @@
+The loader binaries in installer/ are built from a modified Geode SDK 5.10.1 (https://github.com/geode-sdk/geode), see LICENSE-Geode.txt.
+Modified source: local port branch, changes limited to GD 2.209 addresses, layouts and headers.
