@@ -64,9 +64,73 @@ New-Item -ItemType Directory -Force $mods | Out-Null
 
 # Optional mods next to the installer (..\mods)
 $bundled = Join-Path (Split-Path -Parent $here) "mods"
-if (Test-Path $bundled) {
-    $answer = Read-Host "Install the bundled mods too? (y/n)"
-    if ($answer -eq "y") { Copy-Item (Join-Path $bundled "*.geode") $mods }
+$files = @(Get-ChildItem (Join-Path $bundled "*.geode") -ErrorAction SilentlyContinue)
+if ($files.Count -gt 0) {
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    # Mods that were installed before (now in the backup) start checked
+    $previous = @(Get-ChildItem (Join-Path $backup "mods\*.geode") -ErrorAction SilentlyContinue | ForEach-Object { $_.Name })
+    $entries = foreach ($f in $files) {
+        $label = $f.BaseName
+        try {
+            $zip = [System.IO.Compression.ZipFile]::OpenRead($f.FullName)
+            $entry = $zip.GetEntry("mod.json")
+            if ($entry) {
+                $reader = New-Object System.IO.StreamReader($entry.Open())
+                $json = $reader.ReadToEnd() | ConvertFrom-Json
+                $reader.Close()
+                $label = "$($json.name) $($json.version)  ($($f.BaseName))"
+            }
+            $zip.Dispose()
+        } catch {}
+        [pscustomobject]@{ File = $f; Label = $label; Checked = $previous -contains $f.Name }
+    }
+    $entries = @($entries | Sort-Object Label)
+
+    Add-Type -AssemblyName System.Windows.Forms
+    Add-Type -AssemblyName System.Drawing
+    [System.Windows.Forms.Application]::EnableVisualStyles()
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = "Choose mods to install"
+    $form.Size = New-Object System.Drawing.Size(560, 600)
+    $form.StartPosition = "CenterScreen"
+    $form.TopMost = $true
+
+    $list = New-Object System.Windows.Forms.CheckedListBox
+    $list.CheckOnClick = $true
+    $list.Dock = "Fill"
+    $list.IntegralHeight = $false
+    foreach ($e in $entries) { [void]$list.Items.Add($e.Label, $e.Checked) }
+
+    $panel = New-Object System.Windows.Forms.FlowLayoutPanel
+    $panel.Dock = "Bottom"
+    $panel.Height = 44
+    $panel.FlowDirection = "RightToLeft"
+    $panel.Padding = New-Object System.Windows.Forms.Padding(6)
+    $ok = New-Object System.Windows.Forms.Button
+    $ok.Text = "Install"
+    $ok.DialogResult = "OK"
+    $skip = New-Object System.Windows.Forms.Button
+    $skip.Text = "Skip mods"
+    $skip.DialogResult = "Cancel"
+    $none = New-Object System.Windows.Forms.Button
+    $none.Text = "None"
+    $none.Add_Click({ for ($i = 0; $i -lt $list.Items.Count; $i++) { $list.SetItemChecked($i, $false) } })
+    $all = New-Object System.Windows.Forms.Button
+    $all.Text = "All"
+    $all.Add_Click({ for ($i = 0; $i -lt $list.Items.Count; $i++) { $list.SetItemChecked($i, $true) } })
+    $panel.Controls.AddRange(@($ok, $skip, $none, $all))
+
+    $form.Controls.Add($list)
+    $form.Controls.Add($panel)
+    $form.AcceptButton = $ok
+    $form.CancelButton = $skip
+
+    if ($form.ShowDialog() -eq "OK") {
+        foreach ($i in $list.CheckedIndices) { Copy-Item $entries[$i].File.FullName $mods }
+        Write-Host "Installed $($list.CheckedIndices.Count) mod(s)."
+    } else {
+        Write-Host "No mods installed."
+    }
 }
 
 Write-Host "Done. Start the game. To undo, run uninstall.ps1." -ForegroundColor Green
