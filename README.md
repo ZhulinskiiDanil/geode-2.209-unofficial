@@ -49,6 +49,7 @@ Unofficial rebuilds for the 2.209 port: only `mod.json` (GD version) and API fix
 | `hiimjustin000.more_icons.geode` | More Icons | [hiimjasmine00](https://github.com/hiimjasmine00/MoreIcons) | MIT |
 | `hiimjustin000.more_object_info.geode` | More Object Info | [hiimjasmine00](https://github.com/hiimjasmine00/MoreObjectInfo) | MIT |
 | `mat.run-info.geode` | Run Info | [matcool](https://github.com/matcool/geode-mods) | MIT |
+| `mat.circle-tool.geode` | Circle Tool | [matcool](https://github.com/matcool/geode-mods) | MIT |
 | `alk.better-touch-prio.geode` | Better Touch Prio | [altalk23](https://github.com/altalk23/FuckTouchPrio) | Unlicense |
 
 Global List Integration needs **Node IDs** (`geode.node-ids`). Node IDs has no license file, so its rebuild is not published here; ask whoever shared this port with you for it.
