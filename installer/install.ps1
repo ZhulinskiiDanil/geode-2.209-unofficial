@@ -61,6 +61,9 @@ if (Test-Path $res) { Remove-Item $res -Recurse -Force }
 New-Item -ItemType Directory -Force $res | Out-Null
 Copy-Item (Join-Path $here "resources\*") $res -Recurse
 New-Item -ItemType Directory -Force $mods | Out-Null
+# Geode does not always re-extract a replaced .geode; drop the extracted copies so every mod is unpacked fresh
+$unzipped = Join-Path $GDPath "geode\unzipped"
+if (Test-Path $unzipped) { Remove-Item $unzipped -Recurse -Force }
 
 # Optional mods next to the installer (..\mods)
 $bundled = Join-Path (Split-Path -Parent $here) "mods"
