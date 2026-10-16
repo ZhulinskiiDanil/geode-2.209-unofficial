@@ -30,6 +30,9 @@ Ported builds of the Zhulis mods:
 | `zhulis.mod-profiler.geode` | Mod Profiler |
 | `zhulis.crash-doctor.geode` | Crash Doctor |
 | `zhulis.ui-tweaker.geode` | UI Tweaker |
+| `zhulis.faceitify.geode` | FACEITify |
+| `zhulis.context-trainer.geode` | Context Trainer |
+| MiSide menu | 119 MB, download from https://github.com/ZhulinskiiDanil/MiSide/releases/tag/v1.4.0-gd2.209 (options/keybinds screen tweaks are off on 2.209) |
 
 Put a `.geode` file into `Geometry Dash/geode/mods`.
 
