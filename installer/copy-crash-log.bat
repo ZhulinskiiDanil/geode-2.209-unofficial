@@ -54,8 +54,13 @@ if ($crash) {
 }
 if ($log) {
     $lines = (Read-Shared $log.FullName) -split "`r?`n"
+    $text += "=== First 25 lines of $($log.Name) ===`r`n" + (($lines | Select-Object -First 25) -join "`r`n") + "`r`n"
     $tail = $lines | Select-Object -Last 150
     $text += "=== Last 150 lines of $($log.Name) ===`r`n" + ($tail -join "`r`n")
+}
+$modsDir = Join-Path $gd "geode\mods"
+if (Test-Path $modsDir) {
+    $text += "`r`n=== geode\mods ===`r`n" + ((Get-ChildItem $modsDir -Filter *.geode | ForEach-Object { $_.Name }) -join ", ")
 }
 if (-not $text) { Write-Host "No Geode logs found in $gd\geode." -ForegroundColor Red; return }
 
