@@ -33,7 +33,11 @@ function Pick-GD {
 }
 
 if (-not $GDPath) {
-    $GDPath = Find-GD
+    # A copy of the game next to the installer (unzipped into the game folder) wins over Steam
+    foreach ($p in @((Split-Path -Parent $here), $here)) {
+        if (-not $GDPath -and (Test-Path (Join-Path $p "GeometryDash.exe"))) { $GDPath = $p }
+    }
+    if (-not $GDPath) { $GDPath = Find-GD }
     if ($GDPath) {
         Write-Host "Found Geometry Dash: $GDPath"
         $answer = Read-Host "Press Enter to install there, or type C to choose another copy of the game"
