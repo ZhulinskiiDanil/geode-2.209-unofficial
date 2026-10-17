@@ -45,6 +45,10 @@ $crash = Get-ChildItem (Join-Path $gd "geode\crashlogs") -Filter *.log -ErrorAct
 $log = Get-ChildItem (Join-Path $gd "geode\logs") -Filter *.log -ErrorAction SilentlyContinue | Sort-Object LastWriteTime | Select-Object -Last 1
 
 $text = ""
+if ($crash -and $crash.LastWriteTime -lt (Get-Date).AddDays(-1)) {
+    Write-Host "The newest crash log is from $($crash.LastWriteTime) - older than a day, probably not the current crash." -ForegroundColor Yellow
+    $text += "=== NOTE: newest crash log is old ($($crash.LastWriteTime)); the current crash may not have written one ===`r`n"
+}
 if ($crash) {
     $text += "=== Crash log: $($crash.Name) ===`r`n" + (Read-Shared $crash.FullName) + "`r`n"
 }
