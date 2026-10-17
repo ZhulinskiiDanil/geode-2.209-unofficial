@@ -22,7 +22,27 @@ function Find-GD {
     return $null
 }
 
-if (-not $GDPath) { $GDPath = Find-GD }
+function Pick-GD {
+    Add-Type -AssemblyName System.Windows.Forms
+    $dlg = New-Object System.Windows.Forms.OpenFileDialog
+    $dlg.Title = "Select GeometryDash.exe"
+    $dlg.Filter = "GeometryDash.exe|GeometryDash.exe|Programs (*.exe)|*.exe"
+    $owner = New-Object System.Windows.Forms.Form -Property @{ TopMost = $true }
+    if ($dlg.ShowDialog($owner) -eq "OK") { return Split-Path -Parent $dlg.FileName }
+    return $null
+}
+
+if (-not $GDPath) {
+    $GDPath = Find-GD
+    if ($GDPath) {
+        Write-Host "Found Geometry Dash: $GDPath"
+        $answer = Read-Host "Press Enter to install there, or type C to choose another copy of the game"
+        if ($answer -match '^[cC]') { $GDPath = Pick-GD }
+    } else {
+        Write-Host "Geometry Dash was not found in the Steam libraries. Select GeometryDash.exe in the window that opens."
+        $GDPath = Pick-GD
+    }
+}
 if (-not $GDPath -or -not (Test-Path (Join-Path $GDPath "GeometryDash.exe"))) {
     Write-Host "Geometry Dash not found. Run: install.ps1 -GDPath 'C:\path\to\Geometry Dash'" -ForegroundColor Red
     exit 1
