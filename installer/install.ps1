@@ -57,10 +57,19 @@ Write-Host "Geometry Dash: $GDPath"
 $bytes = [System.IO.File]::ReadAllBytes((Join-Path $GDPath "GeometryDash.exe"))
 $pe = [BitConverter]::ToInt32($bytes, 0x3c)
 $ts = [BitConverter]::ToUInt32($bytes, $pe + 8)
-if ($ts -ne $GD2209Timestamp) {
-    Write-Host "This is not Geometry Dash 2.209 (timestamp $ts). Aborting." -ForegroundColor Red
-    exit 1
+while ($ts -ne $GD2209Timestamp) {
+    Write-Host "This copy is not Geometry Dash 2.209 (timestamp $ts): $GDPath" -ForegroundColor Yellow
+    Write-Host "Select GeometryDash.exe of the 2.209 copy in the window that opens (Cancel to quit)."
+    $GDPath = Pick-GD
+    if (-not $GDPath -or -not (Test-Path (Join-Path $GDPath "GeometryDash.exe"))) {
+        Write-Host "Aborted." -ForegroundColor Red
+        exit 1
+    }
+    $bytes = [System.IO.File]::ReadAllBytes((Join-Path $GDPath "GeometryDash.exe"))
+    $pe = [BitConverter]::ToInt32($bytes, 0x3c)
+    $ts = [BitConverter]::ToUInt32($bytes, $pe + 8)
 }
+Write-Host "Installing into: $GDPath"
 
 if (Get-Process GeometryDash -ErrorAction SilentlyContinue) {
     Write-Host "Close Geometry Dash first." -ForegroundColor Red
